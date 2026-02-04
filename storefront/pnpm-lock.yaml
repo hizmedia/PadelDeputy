@@ -15,6 +15,9 @@ importers:
       '@headlessui/react':
         specifier: ^1.6.1
         version: 1.7.19(react-dom@19.0.4(react@19.0.4))(react@19.0.4)
+      '@heroicons/react':
+        specifier: ^2.2.0
+        version: 2.2.0(react@19.0.4)
       '@hookform/error-message':
         specifier: ^2.0.0
         version: 2.0.1(react-dom@19.0.4(react@19.0.4))(react-hook-form@7.54.2(react@19.0.4))(react@19.0.4)
@@ -60,6 +63,9 @@ importers:
       axios:
         specifier: ^1.12.0
         version: 1.13.2
+      heroicons:
+        specifier: ^2.2.0
+        version: 2.2.0
       lodash:
         specifier: ^4.17.23
         version: 4.17.23
@@ -84,6 +90,9 @@ importers:
       react-dom:
         specifier: 19.0.4
         version: 19.0.4(react@19.0.4)
+      react-icons:
+        specifier: ^5.5.0
+        version: 5.5.0(react@19.0.4)
       react-instantsearch-hooks-web:
         specifier: ^6.47.3
         version: 6.47.3(algoliasearch@4.24.0)(react-dom@19.0.4(react@19.0.4))(react@19.0.4)
@@ -366,6 +375,11 @@ packages:
     peerDependencies:
       react: ^16 || ^17 || ^18
       react-dom: ^16 || ^17 || ^18
+
+  '@heroicons/react@2.2.0':
+    resolution: {integrity: sha512-LMcepvRaS9LYHJGsF0zzmgKCUim/X3N/DQKc4jepAXJ7l8QxJ1PmxJzqplF2Z3FE4PqBAIGyJAQ/w4B5dsqbtQ==}
+    peerDependencies:
+      react: '>= 16 || ^19.0.0-rc'
 
   '@hookform/error-message@2.0.1':
     resolution: {integrity: sha512-U410sAr92xgxT1idlu9WWOVjndxLdgPUHEB8Schr27C9eh7/xUnITWpCMF93s+lGiG++D4JnbSnrb5A21AdSNg==}
@@ -2736,6 +2750,9 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
+  heroicons@2.2.0:
+    resolution: {integrity: sha512-yOwvztmNiBWqR946t+JdgZmyzEmnRMC2nxvHFC90bF1SUttwB6yJKYeme1JeEcBfobdOs827nCyiWBS2z/brog==}
+
   hi-base32@0.5.1:
     resolution: {integrity: sha512-EmBBpvdYh/4XxsnUybsPag6VikPYnN30td+vQk+GI3qpahVEG9+gTkG0aXVxTjBqQ5T6ijbWIu77O+C5WFWsnA==}
 
@@ -3460,6 +3477,11 @@ packages:
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
+
+  react-icons@5.5.0:
+    resolution: {integrity: sha512-MEFcXdkP3dLo8uumGI5xN3lDFNsRtrjbOEKDLD7yv76v4wpnEq2Lt2qeHaQOr34I/wPN3s3+N08WkQ+CW37Xiw==}
+    peerDependencies:
+      react: '*'
 
   react-instantsearch-hooks-web@6.47.3:
     resolution: {integrity: sha512-JTkPm11xwCX9eO4FgeeJ4v4O98wz1L7cAa2LkspgzDD1MPjMLtmiRVzvGxuYnOayQTtfC5+0GOBwuJEN8TDI8A==}
@@ -4264,6 +4286,10 @@ snapshots:
       client-only: 0.0.1
       react: 19.0.4
       react-dom: 19.0.4(react@19.0.4)
+
+  '@heroicons/react@2.2.0(react@19.0.4)':
+    dependencies:
+      react: 19.0.4
 
   '@hookform/error-message@2.0.1(react-dom@19.0.4(react@19.0.4))(react-hook-form@7.54.2(react@19.0.4))(react@19.0.4)':
     dependencies:
@@ -7224,6 +7250,8 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
+  heroicons@2.2.0: {}
+
   hi-base32@0.5.1: {}
 
   hogan.js@3.0.2:
@@ -7945,6 +7973,10 @@ snapshots:
       scheduler: 0.25.0
 
   react-hook-form@7.54.2(react@19.0.4):
+    dependencies:
+      react: 19.0.4
+
+  react-icons@5.5.0(react@19.0.4):
     dependencies:
       react: 19.0.4
 
