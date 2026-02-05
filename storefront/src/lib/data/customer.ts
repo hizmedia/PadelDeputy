@@ -58,7 +58,7 @@ export async function signup(_currentState: unknown, formData: FormData) {
     setAuthToken(typeof loginToken === 'string' ? loginToken : loginToken.location)
 
     revalidateTag("customer")
-    return createdCustomer
+    return null
   } catch (error: any) {
     return error.toString()
   }
@@ -75,6 +75,7 @@ export async function login(_currentState: unknown, formData: FormData) {
         setAuthToken(typeof token === 'string' ? token : token.location)
         revalidateTag("customer")
       })
+    return null
   } catch (error: any) {
     return error.toString()
   }
