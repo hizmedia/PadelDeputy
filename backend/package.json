@@ -13,7 +13,7 @@
     "medusa"
   ],
   "scripts": {
-    "build": "npx medusa db:migrate && npx medusa start --verbose",
+    "build": "medusa build",
     "seed": "medusa exec ./src/scripts/seed.ts",
     "ib": "init-backend",
     "start": "init-backend && cd .medusa/server && medusa start --verbose",
