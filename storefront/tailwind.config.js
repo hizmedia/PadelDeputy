@@ -69,6 +69,8 @@ module.exports = {
           "Ubuntu",
           "sans-serif",
         ],
+        oswald: ["var(--font-oswald)", "sans-serif"],
+        quicksand: ["var(--font-quicksand)", "sans-serif"],
       },
       keyframes: {
         ring: {

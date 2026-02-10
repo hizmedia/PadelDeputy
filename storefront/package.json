@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.6.1",
+    "@heroicons/react": "^2.2.0",
     "@hookform/error-message": "^2.0.0",
     "@medusajs/icons": "2.13.1",
     "@medusajs/js-sdk": "preview",
@@ -51,9 +52,11 @@
     "react": "19.0.4",
     "react-country-flag": "^3.0.2",
     "react-dom": "19.0.4",
+    "react-icons": "^5.5.0",
     "react-instantsearch-hooks-web": "^6.47.3",
     "react-intersection-observer": "^9.3.4",
     "server-only": "^0.0.1",
+    "solid": "link:@heroicons/react/24/solid",
     "tailwindcss-radix": "^2.8.0",
     "webpack": "^5.104.1"
   },
