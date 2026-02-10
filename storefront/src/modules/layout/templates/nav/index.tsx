@@ -40,7 +40,7 @@ export default async function Nav() {
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
       <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base">
-        <nav className="content-container txt-xsmall-plus flex items-center w-full h-full text-small-regular">
+        <nav className="content-container txt-xsmall-plus flex items-center w-full h-full text-small-regular relative">
           {/* Left column */}
           <div className="flex-1 small:flex-[1] flex items-center h-full">
             {/* Mobile hamburger */}
@@ -67,7 +67,7 @@ export default async function Nav() {
           </div>
 
           {/* Middle column */}
-          <div className="flex-1 small:flex-[2] flex items-center justify-center h-full">
+          <div className="flex-1 small:flex-[2] flex items-center justify-center h-full relative">
             {/* Mobile logo */}
             <LocalizedClientLink
               href="/"
@@ -83,7 +83,7 @@ export default async function Nav() {
             </LocalizedClientLink>
 
             {/* Desktop categories with brand dropdowns */}
-            <div className="hidden small:flex flex-grow items-center justify-center gap-x-8">
+            <div className="hidden small:flex flex-grow items-center justify-center gap-x-8 h-full">
               {categoriesWithBrands.length > 0 ? (
                 categoriesWithBrands.map(({ category, brands }) => (
                   <CategoryWithBrands

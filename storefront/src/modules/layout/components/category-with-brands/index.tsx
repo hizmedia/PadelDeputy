@@ -33,14 +33,14 @@ export default function CategoryWithBrands({
 
   return (
     <div
-      className="relative"
+      className="relative h-full flex items-center"
       onMouseEnter={() => hasBrands && setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
       {/* Category Link */}
       <LocalizedClientLink
         href={`/categories/${category.handle}`}
-        className="text-sm font-oswald font-medium text-[#004777] hover:text-[#FF7700] transition-colors whitespace-nowrap uppercase"
+        className="text-sm font-oswald font-medium text-[#004777] hover:text-[#FF7700] transition-colors whitespace-nowrap uppercase h-full flex items-center"
         data-testid="nav-category-link"
       >
         {category.name}
@@ -50,16 +50,17 @@ export default function CategoryWithBrands({
       {hasBrands && (
         <div
           className={`
-            absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[400px] z-50
+            absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[400px]
             transition-all duration-300 ease-out
             ${
               isOpen
-                ? "opacity-100 translate-y-0 pointer-events-auto"
-                : "opacity-0 -translate-y-2 pointer-events-none"
+                ? "opacity-100 translate-y-0 pointer-events-auto visible z-[100]"
+                : "opacity-0 -translate-y-2 pointer-events-none invisible"
             }
           `}
+          style={{ zIndex: 100 }}
         >
-          <div className="bg-[#004777] rounded-xl shadow-2xl border-2 border-[#00AFB5] overflow-hidden">
+          <div className="bg-[#004777] rounded-xl shadow-2xl border-2 border-[#00AFB5] overflow-hidden mt-2">
             {/* Header */}
             <div className="bg-[#004777] border-b-2 border-[#00AFB5] px-4 py-3">
               <div className="flex items-center gap-2">
