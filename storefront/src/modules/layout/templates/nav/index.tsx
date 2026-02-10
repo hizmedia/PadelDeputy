@@ -2,12 +2,12 @@ import { Suspense } from "react"
 
 import { listRegions } from "@lib/data/regions"
 import { getCategoriesList } from "@lib/data/categories"
-import { getProductTypes } from "@lib/data/product-types"
+import { getProductTypesByCategory } from "@lib/data/product-types"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
-import BrandsDropdown from "@modules/layout/components/brands-dropdown"
+import CategoryWithBrands from "@modules/layout/components/category-with-brands"
 import Image from "next/image"
 import {
   ShoppingCartIcon,
@@ -19,12 +19,19 @@ import {
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
   const { product_categories } = await getCategoriesList(0, 10)
-  const brands = await getProductTypes()
 
   const MAX_NAVBAR_CATEGORIES = 5
 
   const topLevelCategories =
     product_categories?.filter((cat) => !cat.parent_category) || []
+
+  // Fetch brands for each category
+  const categoriesWithBrands = await Promise.all(
+    topLevelCategories.slice(0, MAX_NAVBAR_CATEGORIES).map(async (category) => ({
+      category,
+      brands: await getProductTypesByCategory(category.id),
+    }))
+  )
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
@@ -37,7 +44,6 @@ export default async function Nav() {
               <SideMenu
                 regions={regions}
                 categories={product_categories || []}
-                brands={brands}
               />
             </div>
 
@@ -72,21 +78,15 @@ export default async function Nav() {
               />
             </LocalizedClientLink>
 
-            {/* Desktop categories */}
+            {/* Desktop categories with brand dropdowns */}
             <div className="hidden small:flex flex-grow items-center justify-center gap-x-8">
-              {topLevelCategories
-                .slice(0, MAX_NAVBAR_CATEGORIES)
-                .map((category) => (
-                  <LocalizedClientLink
-                    key={category.id}
-                    href={`/categories/${category.handle}`}
-                    className="text-sm font-oswald font-medium text-[#004777] hover:text-[#FF7700] transition-colors whitespace-nowrap"
-                    data-testid="nav-category-link"
-                  >
-                    {category.name.toUpperCase()}
-                  </LocalizedClientLink>
-                ))}
-              <BrandsDropdown brands={brands} />
+              {categoriesWithBrands.map(({ category, brands }) => (
+                <CategoryWithBrands
+                  key={category.id}
+                  category={category}
+                  brands={brands}
+                />
+              ))}
             </div>
           </div>
 

@@ -14,11 +14,13 @@ export default function CategoryTemplate({
   sortBy,
   page,
   countryCode,
+  productType,
 }: {
   categories: HttpTypes.StoreProductCategory[]
   sortBy?: SortOptions
   page?: string
   countryCode: string
+  productType?: string
 }) {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
@@ -54,6 +56,7 @@ export default function CategoryTemplate({
             data-testid="category-page-title"
           >
             {category.name}
+            {productType && <span className="text-brand-orange"> - {productType}</span>}
           </h1>
         </div>
         {category.description && (
@@ -80,6 +83,7 @@ export default function CategoryTemplate({
             page={pageNumber}
             categoryId={category.id}
             countryCode={countryCode}
+            productType={productType}
           />
         </Suspense>
       </div>
