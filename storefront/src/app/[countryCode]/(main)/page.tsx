@@ -6,9 +6,9 @@ import { getCollectionsWithProducts } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
+  title: "Padel Deputy | Only Gear That makes the Cut",
   description:
-    "A performant frontend ecommerce starter template with Next.js 14 and Medusa.",
+    "Padel Deputy is your ultimate destination for top-quality padel gear and accessories. We are passionate about the sport of padel and are dedicated to providing players of all levels with the best equipment to enhance their game. Whether you're a beginner looking for your first racket or an experienced player seeking the latest innovations, Padel Deputy has you covered. Our curated selection includes premium rackets, comfortable apparel, durable shoes, and essential accessories from leading brands in the industry. At Padel Deputy, we believe that having the right gear can make all the difference on the court, and we're here to help you find it. Join our community of padel enthusiasts and elevate your game with Padel Deputy today!",
 }
 
 export default async function Home({
