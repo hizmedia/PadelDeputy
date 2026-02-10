@@ -19,7 +19,7 @@ export default async function Footer() {
           <div className="lg:col-span-4">
             <LocalizedClientLink href="/" className="inline-block mb-4">
               <Image
-                src="https://res.cloudinary.com/ddx1fkwnx/image/upload/v1770234792/Transparent_bg_Logo-01_weh4aw.png"
+                src="https://res.cloudinary.com/ddx1fkwnx/image/upload/v1770729923/Logo_white_font_ayme4u.png"
                 alt="Padel Deputy Logo"
                 width={300}
                 height={150}
