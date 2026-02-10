@@ -16,6 +16,10 @@ interface Ball {
   element: HTMLDivElement | null
 }
 
+// Constants
+const MOBILE_BREAKPOINT = 768 // Matches Tailwind's 'md' breakpoint
+const RESIZE_DEBOUNCE_MS = 300
+
 const FloatingTennisBallsBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const ballsRef = useRef<Ball[]>([])
@@ -26,7 +30,7 @@ const FloatingTennisBallsBackground = () => {
     const container = containerRef.current
     if (!container) return
 
-    const isMobile = window.innerWidth < 768
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT
     const ballCount = isMobile ? 9 : 17
 
     // Initialize balls
@@ -68,22 +72,44 @@ const FloatingTennisBallsBackground = () => {
         element.style.transform = `rotate(${ball.rotation}deg)`
         element.style.transition = "none"
 
-        // Tennis ball visual design
-        element.innerHTML = `
-          <div style="
-            width: 100%;
-            height: 100%;
-            background: #DFFF00;
-            border-radius: 50%;
-            position: relative;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), inset -2px -2px 4px rgba(0, 0, 0, 0.1);
-          ">
-            <svg width="100%" height="100%" viewBox="0 0 100 100" style="position: absolute; top: 0; left: 0;">
-              <path d="M 20 10 Q 50 30, 80 10" fill="none" stroke="white" stroke-width="2.5" opacity="0.9"/>
-              <path d="M 20 90 Q 50 70, 80 90" fill="none" stroke="white" stroke-width="2.5" opacity="0.9"/>
-            </svg>
-          </div>
-        `
+        // Tennis ball visual design - create elements using DOM APIs
+        const ballInner = document.createElement("div")
+        ballInner.style.width = "100%"
+        ballInner.style.height = "100%"
+        ballInner.style.background = "#DFFF00"
+        ballInner.style.borderRadius = "50%"
+        ballInner.style.position = "relative"
+        ballInner.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2), inset -2px -2px 4px rgba(0, 0, 0, 0.1)"
+
+        // Create SVG for seam lines
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+        svg.setAttribute("width", "100%")
+        svg.setAttribute("height", "100%")
+        svg.setAttribute("viewBox", "0 0 100 100")
+        svg.style.position = "absolute"
+        svg.style.top = "0"
+        svg.style.left = "0"
+
+        // Top seam line
+        const topPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
+        topPath.setAttribute("d", "M 20 10 Q 50 30, 80 10")
+        topPath.setAttribute("fill", "none")
+        topPath.setAttribute("stroke", "white")
+        topPath.setAttribute("stroke-width", "2.5")
+        topPath.setAttribute("opacity", "0.9")
+
+        // Bottom seam line
+        const bottomPath = document.createElementNS("http://www.w3.org/2000/svg", "path")
+        bottomPath.setAttribute("d", "M 20 90 Q 50 70, 80 90")
+        bottomPath.setAttribute("fill", "none")
+        bottomPath.setAttribute("stroke", "white")
+        bottomPath.setAttribute("stroke-width", "2.5")
+        bottomPath.setAttribute("opacity", "0.9")
+
+        svg.appendChild(topPath)
+        svg.appendChild(bottomPath)
+        ballInner.appendChild(svg)
+        element.appendChild(ballInner)
 
         container.appendChild(element)
         ball.element = element
@@ -136,7 +162,7 @@ const FloatingTennisBallsBackground = () => {
       }
       resizeTimeoutRef.current = setTimeout(() => {
         initBalls()
-      }, 300)
+      }, RESIZE_DEBOUNCE_MS)
     }
 
     window.addEventListener("resize", handleResize)
