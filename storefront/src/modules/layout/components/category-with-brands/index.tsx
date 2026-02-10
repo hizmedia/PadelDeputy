@@ -20,10 +20,21 @@ export default function CategoryWithBrands({
 }) {
   const [isOpen, setIsOpen] = useState(false)
 
+  // Safety check for category handle
+  if (!category?.handle) {
+    return (
+      <span className="text-sm font-oswald font-medium text-[#004777] uppercase">
+        {category?.name || 'Category'}
+      </span>
+    )
+  }
+
+  const hasBrands = brands && brands.length > 0
+
   return (
     <div
       className="relative"
-      onMouseEnter={() => setIsOpen(true)}
+      onMouseEnter={() => hasBrands && setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
       {/* Category Link */}
@@ -36,7 +47,7 @@ export default function CategoryWithBrands({
       </LocalizedClientLink>
 
       {/* Brands Dropdown - only show if there are brands in this category */}
-      {brands && brands.length > 0 && (
+      {hasBrands && (
         <div
           className={`
             absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[400px] z-50

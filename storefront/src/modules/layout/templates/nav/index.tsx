@@ -27,10 +27,14 @@ export default async function Nav() {
 
   // Fetch brands for each category
   const categoriesWithBrands = await Promise.all(
-    topLevelCategories.slice(0, MAX_NAVBAR_CATEGORIES).map(async (category) => ({
-      category,
-      brands: await getProductTypesByCategory(category.id),
-    }))
+    topLevelCategories.slice(0, MAX_NAVBAR_CATEGORIES).map(async (category) => {
+      const brands = await getProductTypesByCategory(category.id)
+      console.log(`Category ${category.name} has ${brands.length} brands:`, brands.map(b => b.name))
+      return {
+        category,
+        brands,
+      }
+    })
   )
 
   return (
@@ -80,13 +84,17 @@ export default async function Nav() {
 
             {/* Desktop categories with brand dropdowns */}
             <div className="hidden small:flex flex-grow items-center justify-center gap-x-8">
-              {categoriesWithBrands.map(({ category, brands }) => (
-                <CategoryWithBrands
-                  key={category.id}
-                  category={category}
-                  brands={brands}
-                />
-              ))}
+              {categoriesWithBrands.length > 0 ? (
+                categoriesWithBrands.map(({ category, brands }) => (
+                  <CategoryWithBrands
+                    key={category.id}
+                    category={category}
+                    brands={brands}
+                  />
+                ))
+              ) : (
+                <span className="text-sm text-gray-500">Loading categories...</span>
+              )}
             </div>
           </div>
 
