@@ -8,11 +8,18 @@ import {
 
   ChevronRightIcon,
   ChevronLeftIcon,
+  ChevronDownIcon,
 } from "@heroicons/react/24/solid"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CountrySelect from "../country-select"
 import { HttpTypes } from "@medusajs/types"
-import { IoIosTennisball } from "react-icons/io";
+import { IoIosTennisball, IoTennisball } from "react-icons/io5"
+
+type Brand = {
+  id: string
+  name: string
+  slug: string
+}
 
 
 const SideMenuItems = {
@@ -25,12 +32,15 @@ const SideMenuItems = {
 const SideMenu = ({
   regions,
   categories,
+  brands,
 }: {
   regions: HttpTypes.StoreRegion[] | null
   categories?: HttpTypes.StoreProductCategory[] | null
+  brands?: Brand[]
 }) => {
   const toggleState = useToggleState()
   const [storeOpen, setStoreOpen] = useState(false)
+  const [brandsOpen, setBrandsOpen] = useState(false)
 
   const topLevelCategories = useMemo(() => {
     return (categories || []).filter((cat) => !cat.parent_category)
@@ -131,6 +141,57 @@ const SideMenu = ({
                                     <span>Store</span>
                                     <ChevronRightIcon className="w-7 h-7" />
                                   </button>
+                                </li>
+                              )}
+
+                              {/* Brands Accordion */}
+                              {brands && brands.length > 0 && (
+                                <li className="w-full">
+                                  <button
+                                    type="button"
+                                    className="flex items-center justify-between w-full text-3xl leading-10 hover:text-[#FF7700] font-quicksand transition-colors"
+                                    onClick={() => setBrandsOpen(!brandsOpen)}
+                                  >
+                                    <span>Brands</span>
+                                    <IoTennisball
+                                      className={`w-7 h-7 text-[#EFD28D] transition-transform duration-300 ${
+                                        brandsOpen ? "rotate-45" : ""
+                                      }`}
+                                    />
+                                  </button>
+                                  
+                                  {/* Brands List */}
+                                  <div
+                                    className={`
+                                      overflow-hidden transition-all duration-300 ease-out
+                                      ${brandsOpen ? "max-h-[500px] opacity-100 mt-4" : "max-h-0 opacity-0"}
+                                    `}
+                                  >
+                                    <div className="flex flex-col gap-2 pl-4 border-l-2 border-[#00AFB5]">
+                                      {brands.map((brand) => (
+                                        <LocalizedClientLink
+                                          key={brand.id}
+                                          href={`/store?type=${encodeURIComponent(brand.name)}`}
+                                          className="
+                                            flex items-center gap-2 px-4 py-3 rounded-lg
+                                            bg-[#004777]/50 hover:bg-[#FF7700]
+                                            border border-[#00AFB5]/30
+                                            transition-all duration-200
+                                            min-h-[44px]
+                                          "
+                                          onClick={() => {
+                                            setBrandsOpen(false)
+                                            close()
+                                          }}
+                                        >
+                                          <IoTennisball className="w-4 h-4 text-[#EFD28D]" />
+                                          <span className="text-white font-quicksand text-lg">
+                                            {brand.name}
+                                          </span>
+                                        </LocalizedClientLink>
+                                      ))}
+                                    </div>
+                                  </div>
                                 </li>
                               )}
 

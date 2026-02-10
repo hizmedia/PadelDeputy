@@ -83,47 +83,39 @@ export default async function ProductPreview({
           </div>
         )}
 
-        {/* Price Tag - Sticking out from right side */}
-        <div className="absolute -right-1 top-1/2 -translate-y-1/2 z-20">
-          <div className="relative">
-            {/* Price Tag Shape */}
-            <div className="bg-[#FF7700] text-white px-4 py-3 pr-6 rounded-l-xl shadow-xl flex items-center gap-2 group-hover:shadow-2xl group-hover:pr-7 transition-all duration-300">
-              {/* Hole punch effect */}
-              <div className="absolute left-2 top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full border border-[#CC5F00]"></div>
-              
-              {/* Price content */}
-              <div className="flex flex-col items-end ml-3">
-                {cheapestPrice?.price_type === "sale" && cheapestPrice?.original_price && (
-                  <span className="text-xs line-through opacity-75 font-quicksand">
-                    {cheapestPrice.original_price}
-                  </span>
-                )}
-                <span className="text-2xl font-bold font-oswald whitespace-nowrap">
-                  {cheapestPrice?.calculated_price || "$99.99"}
-                </span>
-              </div>
-            </div>
-            
-            {/* Triangle notch at the bottom for price tag effect */}
-            <div className="absolute -bottom-2 left-0 w-0 h-0 border-l-[16px] border-l-transparent border-t-[8px] border-t-[#CC5F00]"></div>
-          </div>
-        </div>
-
-        {/* Image Container */}
+        {/* Image Container - Perfect Square */}
         <div className={(brand || isPopular) ? "pt-10" : ""}>
-          <div className="relative w-full h-44 md:h-48 lg:h-52 overflow-hidden rounded-t-xl">
+          <div className="relative w-full aspect-square overflow-hidden rounded-t-xl">
             <Thumbnail
               thumbnail={product.thumbnail}
               images={product.images}
-              size="full"
+              size="square"
               isFeatured={isFeatured}
               className="!p-0 !shadow-none !rounded-none group-hover:scale-105 transition-transform duration-300"
             />
           </div>
         </div>
 
+        {/* Price Tag - Below image, right aligned */}
+        <div className="px-6 pt-4 flex justify-end">
+          <div className="relative">
+            <div className="bg-[#FF7700] text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 group-hover:shadow-xl transition-all duration-300">
+              <div className="flex flex-col items-end">
+                {cheapestPrice?.price_type === "sale" && cheapestPrice?.original_price && (
+                  <span className="text-xs line-through opacity-75 font-quicksand">
+                    {cheapestPrice.original_price}
+                  </span>
+                )}
+                <span className="text-xl font-bold font-oswald whitespace-nowrap">
+                  {cheapestPrice?.calculated_price || "$99.99"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Content Section - Aiwas Style */}
-        <div className="p-6 flex flex-col grow">
+        <div className="p-6 pb-4 flex flex-col grow">
           {/* Title */}
           <div className="mb-4">
             <h3 className="text-lg font-bold text-white group-hover:text-[#FF7700] transition-colors font-oswald uppercase tracking-wide">

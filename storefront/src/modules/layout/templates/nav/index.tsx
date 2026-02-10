@@ -2,10 +2,12 @@ import { Suspense } from "react"
 
 import { listRegions } from "@lib/data/regions"
 import { getCategoriesList } from "@lib/data/categories"
+import { getProductTypes } from "@lib/data/product-types"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
+import BrandsDropdown from "@modules/layout/components/brands-dropdown"
 import Image from "next/image"
 import {
   ShoppingCartIcon,
@@ -17,6 +19,7 @@ import {
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
   const { product_categories } = await getCategoriesList(0, 10)
+  const brands = await getProductTypes()
 
   const MAX_NAVBAR_CATEGORIES = 5
 
@@ -34,6 +37,7 @@ export default async function Nav() {
               <SideMenu
                 regions={regions}
                 categories={product_categories || []}
+                brands={brands}
               />
             </div>
 
@@ -76,12 +80,13 @@ export default async function Nav() {
                   <LocalizedClientLink
                     key={category.id}
                     href={`/categories/${category.handle}`}
-                    className="text-sm font-oswald font-medium text-[#004777] hover:text-[#A30000] transition-colors whitespace-nowrap"
+                    className="text-sm font-oswald font-medium text-[#004777] hover:text-[#FF7700] transition-colors whitespace-nowrap"
                     data-testid="nav-category-link"
                   >
                     {category.name.toUpperCase()}
                   </LocalizedClientLink>
                 ))}
+              <BrandsDropdown brands={brands} />
             </div>
           </div>
 
@@ -99,7 +104,7 @@ export default async function Nav() {
             )}
             <LocalizedClientLink
               href="/contact"
-              className="text-sm font-oswald font-medium text-[#004777] hover:text-[#A30000] transition-colors whitespace-nowrap"
+              className="text-sm font-oswald font-medium text-[#004777] hover:text-[#FF7700] transition-colors whitespace-nowrap"
               data-testid="nav-contact-link"
             >
               <PhoneIcon className="w-6 h-6 inline-block mr-2 text-[#004777] hidden xsmall:block" />
