@@ -34,6 +34,13 @@ module.exports = {
           80: "#1F2937",
           90: "#111827",
         },
+        brand: {
+          blue: "#004777",
+          red: "#A30000",
+          orange: "#FF7700",
+          cream: "#EFD28D",
+          teal: "#00AFB5",
+        },
       },
       borderRadius: {
         none: "0px",

@@ -83,7 +83,7 @@ export default async function Footer() {
           {/* Categories Column */}
           {product_categories && product_categories?.length > 0 && (
             <div className="lg:col-span-3">
-              <h3 className="font-oswald font-semibold text-ui-fg-base uppercase tracking-wide text-sm mb-4 text-[#ffffff]">
+              <h3 className="font-oswald font-semibold uppercase tracking-wide text-sm mb-4 text-[#FF7700]">
                 Shop by Category
               </h3>
               <ul className="space-y-3">
@@ -111,7 +111,7 @@ export default async function Footer() {
           {/* Collections Column */}
           {collections && collections.length > 0 && (
             <div className="lg:col-span-2">
-              <h3 className="font-oswald font-semibold text-[#ffffff] uppercase tracking-wide text-sm mb-4">
+              <h3 className="font-oswald font-semibold uppercase tracking-wide text-sm mb-4 text-[#FF7700]">
                 Collections
               </h3>
               <ul className="space-y-3">
@@ -131,7 +131,7 @@ export default async function Footer() {
 
           {/* Customer Service Column */}
           <div className="lg:col-span-3">
-            <h3 className="font-oswald font-semibold text-ui-fg-base uppercase tracking-wide text-sm mb-4 text-[#ffffff]">
+            <h3 className="font-oswald font-semibold text-[#FF7700] uppercase tracking-wide text-sm mb-4">
               Customer Service
             </h3>
             <ul className="space-y-3">

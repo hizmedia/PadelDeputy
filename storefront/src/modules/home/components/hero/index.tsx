@@ -7,29 +7,8 @@ const Hero = () => {
     <div className="relative w-full h-[85vh] overflow-hidden bg-white">
       {/* Floating Tennis Balls Background */}
       <FloatingTennisBallsBackground />
-
-      {/* Animated Background Patterns */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-[#FF7700] rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-[#A30000] rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-[#EFD28D] rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
-      </div>
-
-      {/* Padel Court Lines Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="court-grid" width="100" height="100" patternUnits="userSpaceOnUse">
-              <path d="M 100 0 L 0 0 0 100" fill="none" stroke="white" strokeWidth="1"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#court-grid)" />
-        </svg>
-      </div>
-
       {/* Content Container */}
       <div className="relative z-10 content-container h-full flex flex-col justify-center items-center text-center px-6">
-
         {/* Main Heading */}
         <h1 className="font-oswald font-bold text-white mb-6 leading-tight">
           <span className="block text-5xl md:text-7xl lg:text-8xl uppercase tracking-tight text-[#004777] drop-shadow-lg">
@@ -45,22 +24,25 @@ const Hero = () => {
 
         {/* Subheading */}
         <p className=" text-lg md:text-xl font-quicksand max-w-2xl mb-10 leading-relaxed text-[#004777]">
-          Curated collection of professional-grade padel rackets, apparel, and accessories. 
-          <span className="block mt-2 text-[#00AFB5] font-semibold">Elevate your game with the best.</span>
+          Curated collection of professional-grade padel rackets, apparel, and
+          accessories.
+          <span className="block mt-2 text-[#00AFB5] font-semibold">
+            Elevate your game with the best.
+          </span>
         </p>
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 mb-12">
           <LocalizedClientLink href="/store">
-            <Button 
+            <Button
               size="xlarge"
               className="bg-[#FF7700] hover:bg-[#FF7700]/90 text-white border-none shadow-xl shadow-[#FF7700]/30 font-oswald font-bold uppercase tracking-wider px-8 transition-all hover:scale-105 hover:shadow-2xl hover:shadow-[#FF7700]/40"
             >
-              Shop Collection
+              Shop Rackets
             </Button>
           </LocalizedClientLink>
           <LocalizedClientLink href="/collections">
-            <Button 
+            <Button
               size="xlarge"
               variant="transparent"
               className="border-2 border-[#004777] text-[#004777] hover:bg-[#004777]/10 backdrop-blur-sm font-oswald font-bold uppercase tracking-wider px-8 transition-all hover:scale-105"
@@ -69,15 +51,6 @@ const Hero = () => {
             </Button>
           </LocalizedClientLink>
         </div>
-      </div>
-
-      {/* Bottom Gradient Fade */}
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <svg className="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
       </div>
     </div>
   )

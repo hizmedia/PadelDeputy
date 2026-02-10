@@ -35,32 +35,37 @@ export default function CategoryTemplate({
     >
       <RefinementList sortBy={sort} data-testid="sort-by-container" />
       <div className="w-full">
-        <div className="flex flex-row mb-8 text-2xl-semi gap-4">
+        <div className="flex flex-row mb-8 text-2xl-semi gap-4 items-center">
           {parents &&
             parents.map((parent) => (
-              <span key={parent.id} className="text-ui-fg-subtle">
+              <span key={parent.id} className="flex items-center gap-4">
                 <LocalizedClientLink
-                  className="mr-4 hover:text-black"
+                  className="font-oswald text-brand-teal hover:text-brand-orange transition-colors duration-200"
                   href={`/categories/${parent.handle}`}
                   data-testid="sort-by-link"
                 >
                   {parent.name}
                 </LocalizedClientLink>
-                /
+                <span className="text-grey-40">/</span>
               </span>
             ))}
-          <h1 data-testid="category-page-title">{category.name}</h1>
+          <h1 
+            className="font-oswald text-brand-blue text-3xl font-bold"
+            data-testid="category-page-title"
+          >
+            {category.name}
+          </h1>
         </div>
         {category.description && (
-          <div className="mb-8 text-base-regular">
+          <div className="mb-8 font-quicksand text-base text-grey-70">
             <p>{category.description}</p>
           </div>
         )}
         {category.category_children && (
-          <div className="mb-8 text-base-large">
+          <div className="mb-8">
             <ul className="grid grid-cols-1 gap-2">
               {category.category_children?.map((c) => (
-                <li key={c.id}>
+                <li key={c.id} className="font-quicksand">
                   <InteractiveLink href={`/categories/${c.handle}`}>
                     {c.name}
                   </InteractiveLink>
