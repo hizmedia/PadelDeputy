@@ -8,31 +8,41 @@ interface PadelCourtBackgroundProps {
 
 // Physics constants
 const BALL_PHYSICS = {
-  INITIAL_VELOCITY_RANGE: 4,
-  GRAVITY: 0.05,
-  BOUNCE_DAMPENING: 0.95,
-  RADIUS: 4,
+  INITIAL_VELOCITY_RANGE: 5,
+  GRAVITY: 0.08,
+  BOUNCE_DAMPENING: 0.85,
+  RADIUS: 6,
   HORIZONTAL_GRAVITY_FACTOR: 0.3,
 } as const
 
 const PLAYER_CONFIG = {
-  HORIZONTAL_WIDTH_RATIO: 0.03,
-  HORIZONTAL_HEIGHT_RATIO: 0.2,
-  VERTICAL_WIDTH_RATIO: 0.2,
-  VERTICAL_HEIGHT_RATIO: 0.04,
-  HORIZONTAL_LEFT_X: 0.05,
-  HORIZONTAL_RIGHT_X: 0.92,
-  VERTICAL_TOP_Y: 0.05,
-  VERTICAL_BOTTOM_Y: 0.91,
-  TRACKING_SMOOTHING: 0.1,
+  HORIZONTAL_WIDTH_RATIO: 0.02,
+  HORIZONTAL_HEIGHT_RATIO: 0.15,
+  VERTICAL_WIDTH_RATIO: 0.15,
+  VERTICAL_HEIGHT_RATIO: 0.03,
+  HORIZONTAL_LEFT_X: 0.08,
+  HORIZONTAL_RIGHT_X: 0.90,
+  VERTICAL_TOP_Y: 0.08,
+  VERTICAL_BOTTOM_Y: 0.89,
+  TRACKING_SMOOTHING: 0.15,
+  PREDICTION_FACTOR: 3,
 } as const
 
 const COURT_CONFIG = {
   PADDING: 20,
   LINE_WIDTH: 2,
-  LINE_COLOR: "rgba(0, 255, 0, 0.6)",
+  LINE_COLOR: "#00AFB5",
   SHADOW_BLUR: 8,
-  SHADOW_COLOR: "rgba(0, 255, 0, 0.5)",
+  SHADOW_COLOR: "rgba(0, 175, 181, 0.5)",
+  BG_COLOR: "#004777",
+} as const
+
+const COLORS = {
+  PLAYER: "#00AFB5",
+  PLAYER_SHADOW: "rgba(0, 175, 181, 0.6)",
+  BALL_PRIMARY: "#D4FF00",
+  BALL_SECONDARY: "#FFEB3B",
+  BALL_LINES: "#9E9E9E",
 } as const
 
 const PadelCourtBackground: React.FC<PadelCourtBackgroundProps> = ({
@@ -148,18 +158,18 @@ const PadelCourtBackground: React.FC<PadelCourtBackgroundProps> = ({
     // Drawing functions
     const drawCourt = () => {
       const portrait = isPortrait()
+      const padding = COURT_CONFIG.PADDING
 
       ctx.strokeStyle = COURT_CONFIG.LINE_COLOR
       ctx.lineWidth = COURT_CONFIG.LINE_WIDTH
       ctx.shadowColor = COURT_CONFIG.SHADOW_COLOR
       ctx.shadowBlur = COURT_CONFIG.SHADOW_BLUR
 
-      // Court boundaries
-      const padding = COURT_CONFIG.PADDING
+      // Court boundaries (outer walls)
       ctx.strokeRect(padding, padding, canvas.width - padding * 2, canvas.height - padding * 2)
 
-      // Center net
-      ctx.setLineDash([10, 10])
+      // Center net (solid line for padel)
+      ctx.setLineDash([])
       if (portrait) {
         ctx.beginPath()
         ctx.moveTo(padding, canvas.height / 2)
@@ -171,35 +181,122 @@ const PadelCourtBackground: React.FC<PadelCourtBackgroundProps> = ({
         ctx.lineTo(canvas.width / 2, canvas.height - padding)
         ctx.stroke()
       }
-      ctx.setLineDash([])
+
+      // Service boxes (padel court specific)
+      ctx.lineWidth = 1.5
+      if (portrait) {
+        // Horizontal service lines
+        const serviceLineY1 = canvas.height * 0.30
+        const serviceLineY2 = canvas.height * 0.70
+        
+        ctx.beginPath()
+        ctx.moveTo(padding, serviceLineY1)
+        ctx.lineTo(canvas.width - padding, serviceLineY1)
+        ctx.stroke()
+        
+        ctx.beginPath()
+        ctx.moveTo(padding, serviceLineY2)
+        ctx.lineTo(canvas.width - padding, serviceLineY2)
+        ctx.stroke()
+
+        // Center service line (splits the service boxes)
+        ctx.beginPath()
+        ctx.moveTo(canvas.width / 2, serviceLineY1)
+        ctx.lineTo(canvas.width / 2, canvas.height / 2)
+        ctx.stroke()
+        
+        ctx.beginPath()
+        ctx.moveTo(canvas.width / 2, canvas.height / 2)
+        ctx.lineTo(canvas.width / 2, serviceLineY2)
+        ctx.stroke()
+      } else {
+        // Vertical service lines
+        const serviceLineX1 = canvas.width * 0.30
+        const serviceLineX2 = canvas.width * 0.70
+        
+        ctx.beginPath()
+        ctx.moveTo(serviceLineX1, padding)
+        ctx.lineTo(serviceLineX1, canvas.height - padding)
+        ctx.stroke()
+        
+        ctx.beginPath()
+        ctx.moveTo(serviceLineX2, padding)
+        ctx.lineTo(serviceLineX2, canvas.height - padding)
+        ctx.stroke()
+
+        // Center service line (splits the service boxes)
+        ctx.beginPath()
+        ctx.moveTo(serviceLineX1, canvas.height / 2)
+        ctx.lineTo(canvas.width / 2, canvas.height / 2)
+        ctx.stroke()
+        
+        ctx.beginPath()
+        ctx.moveTo(canvas.width / 2, canvas.height / 2)
+        ctx.lineTo(serviceLineX2, canvas.height / 2)
+        ctx.stroke()
+      }
 
       ctx.shadowBlur = 0
     }
 
     const drawPlayers = () => {
-      ctx.fillStyle = "rgba(0, 255, 0, 0.8)"
-      ctx.shadowColor = "rgba(0, 255, 0, 0.6)"
+      ctx.fillStyle = COLORS.PLAYER
+      ctx.shadowColor = COLORS.PLAYER_SHADOW
       ctx.shadowBlur = 10
 
-      // Player 1
-      ctx.fillRect(player1.x, player1.y, player1.width, player1.height)
+      // Player 1 (with rounded corners)
+      ctx.beginPath()
+      const radius1 = Math.min(player1.width, player1.height) / 4
+      ctx.roundRect(player1.x, player1.y, player1.width, player1.height, radius1)
+      ctx.fill()
 
-      // Player 2
-      ctx.fillRect(player2.x, player2.y, player2.width, player2.height)
+      // Player 2 (with rounded corners)
+      ctx.beginPath()
+      const radius2 = Math.min(player2.width, player2.height) / 4
+      ctx.roundRect(player2.x, player2.y, player2.width, player2.height, radius2)
+      ctx.fill()
 
       ctx.shadowBlur = 0
     }
 
     const drawBall = () => {
-      ctx.fillStyle = "rgba(0, 255, 0, 1)"
-      ctx.shadowColor = "rgba(0, 255, 0, 0.8)"
-      ctx.shadowBlur = 15
+      // Draw tennis ball (yellow with curved lines)
+      const x = ball.x
+      const y = ball.y
+      const r = ball.radius
+
+      // Yellow gradient for ball
+      const gradient = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, 0, x, y, r)
+      gradient.addColorStop(0, COLORS.BALL_SECONDARY)
+      gradient.addColorStop(0.7, COLORS.BALL_PRIMARY)
+      gradient.addColorStop(1, "#B8C000")
+
+      ctx.fillStyle = gradient
+      ctx.shadowColor = "rgba(212, 255, 0, 0.6)"
+      ctx.shadowBlur = 12
 
       ctx.beginPath()
-      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2)
+      ctx.arc(x, y, r, 0, Math.PI * 2)
       ctx.fill()
 
       ctx.shadowBlur = 0
+
+      // Draw characteristic tennis ball curved lines
+      ctx.strokeStyle = COLORS.BALL_LINES
+      ctx.lineWidth = 1.2
+      ctx.lineCap = "round"
+
+      // Left curved line
+      ctx.beginPath()
+      ctx.arc(x, y, r * 0.8, Math.PI * 0.6, Math.PI * 1.4)
+      ctx.stroke()
+
+      // Right curved line (mirrored)
+      ctx.beginPath()
+      ctx.arc(x, y, r * 0.8, -Math.PI * 0.4, Math.PI * 0.4)
+      ctx.stroke()
+
+      ctx.lineCap = "butt"
     }
 
     // Physics and collision detection
@@ -276,14 +373,19 @@ const PadelCourtBackground: React.FC<PadelCourtBackgroundProps> = ({
     const updatePlayers = () => {
       const portrait = isPortrait()
       const smoothing = PLAYER_CONFIG.TRACKING_SMOOTHING
+      const predictionFactor = PLAYER_CONFIG.PREDICTION_FACTOR
 
       if (portrait) {
-        // Vertical layout - track ball horizontally
+        // Vertical layout - track ball horizontally with prediction
         player1.targetY = player1.y
         player2.targetY = player2.y
 
-        const targetX1 = ball.x - player1.width / 2
-        const targetX2 = ball.x - player2.width / 2
+        // Predict where ball will be based on velocity
+        const predictedX1 = ball.x + ball.vx * predictionFactor
+        const predictedX2 = ball.x + ball.vx * predictionFactor
+
+        const targetX1 = predictedX1 - player1.width / 2
+        const targetX2 = predictedX2 - player2.width / 2
 
         player1.x += (targetX1 - player1.x) * smoothing
         player2.x += (targetX2 - player2.x) * smoothing
@@ -293,9 +395,13 @@ const PadelCourtBackground: React.FC<PadelCourtBackgroundProps> = ({
         player1.x = Math.max(padding, Math.min(canvas.width - padding - player1.width, player1.x))
         player2.x = Math.max(padding, Math.min(canvas.width - padding - player2.width, player2.x))
       } else {
-        // Horizontal layout - track ball vertically
-        player1.targetY = ball.y - player1.height / 2
-        player2.targetY = ball.y - player2.height / 2
+        // Horizontal layout - track ball vertically with prediction
+        // Predict where ball will be based on velocity
+        const predictedY1 = ball.y + ball.vy * predictionFactor
+        const predictedY2 = ball.y + ball.vy * predictionFactor
+
+        player1.targetY = predictedY1 - player1.height / 2
+        player2.targetY = predictedY2 - player2.height / 2
 
         player1.y += (player1.targetY - player1.y) * smoothing
         player2.y += (player2.targetY - player2.y) * smoothing
@@ -309,7 +415,7 @@ const PadelCourtBackground: React.FC<PadelCourtBackgroundProps> = ({
 
     // Animation loop
     const animate = () => {
-      ctx.fillStyle = "rgba(17, 24, 39, 1)"
+      ctx.fillStyle = COURT_CONFIG.BG_COLOR
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       drawCourt()
@@ -337,7 +443,7 @@ const PadelCourtBackground: React.FC<PadelCourtBackgroundProps> = ({
   // Render static court if reduced motion is preferred
   const renderStaticCourt = () => {
     return (
-      <div className="absolute inset-0 bg-gray-900">
+      <div className="absolute inset-0" style={{ backgroundColor: COURT_CONFIG.BG_COLOR }}>
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <filter id="glow">
@@ -356,7 +462,7 @@ const PadelCourtBackground: React.FC<PadelCourtBackgroundProps> = ({
             width="calc(100% - 40px)"
             height="calc(100% - 40px)"
             fill="none"
-            stroke="rgba(0, 255, 0, 0.6)"
+            stroke={COURT_CONFIG.LINE_COLOR}
             strokeWidth="2"
             filter="url(#glow)"
           />
@@ -367,9 +473,8 @@ const PadelCourtBackground: React.FC<PadelCourtBackgroundProps> = ({
             y1="20"
             x2="50%"
             y2="calc(100% - 20px)"
-            stroke="rgba(0, 255, 0, 0.6)"
+            stroke={COURT_CONFIG.LINE_COLOR}
             strokeWidth="2"
-            strokeDasharray="10,10"
             filter="url(#glow)"
             className="hidden landscape:block"
           />
@@ -378,58 +483,69 @@ const PadelCourtBackground: React.FC<PadelCourtBackgroundProps> = ({
             y1="50%"
             x2="calc(100% - 20px)"
             y2="50%"
-            stroke="rgba(0, 255, 0, 0.6)"
+            stroke={COURT_CONFIG.LINE_COLOR}
             strokeWidth="2"
-            strokeDasharray="10,10"
             filter="url(#glow)"
             className="block landscape:hidden"
           />
 
           {/* Player bars */}
           <rect
-            x="5%"
-            y="40%"
-            width="3%"
-            height="20%"
-            fill="rgba(0, 255, 0, 0.8)"
+            x="8%"
+            y="42.5%"
+            width="2%"
+            height="15%"
+            fill={COLORS.PLAYER}
             filter="url(#glow)"
             className="hidden landscape:block"
+            rx="2"
           />
           <rect
-            x="92%"
-            y="40%"
-            width="3%"
-            height="20%"
-            fill="rgba(0, 255, 0, 0.8)"
+            x="90%"
+            y="42.5%"
+            width="2%"
+            height="15%"
+            fill={COLORS.PLAYER}
             filter="url(#glow)"
             className="hidden landscape:block"
+            rx="2"
           />
           <rect
-            x="40%"
-            y="5%"
-            width="20%"
-            height="4%"
-            fill="rgba(0, 255, 0, 0.8)"
+            x="42.5%"
+            y="8%"
+            width="15%"
+            height="3%"
+            fill={COLORS.PLAYER}
             filter="url(#glow)"
             className="block landscape:hidden"
+            rx="2"
           />
           <rect
-            x="40%"
-            y="91%"
-            width="20%"
-            height="4%"
-            fill="rgba(0, 255, 0, 0.8)"
+            x="42.5%"
+            y="89%"
+            width="15%"
+            height="3%"
+            fill={COLORS.PLAYER}
             filter="url(#glow)"
             className="block landscape:hidden"
+            rx="2"
           />
 
-          {/* Ball */}
+          {/* Ball - Tennis ball appearance */}
+          <circle
+            cx="50%"
+            cy="50%"
+            r="6"
+            fill={COLORS.BALL_PRIMARY}
+            filter="url(#glow)"
+          />
           <circle
             cx="50%"
             cy="50%"
             r="4"
-            fill="rgba(0, 255, 0, 1)"
-            filter="url(#glow)"
+            fill="none"
+            stroke={COLORS.BALL_LINES}
+            strokeWidth="1"
           />
         </svg>
       </div>
@@ -443,8 +559,8 @@ const PadelCourtBackground: React.FC<PadelCourtBackgroundProps> = ({
       ) : (
         <canvas
           ref={canvasRef}
-          className="absolute inset-0 w-full h-full bg-gray-900"
-          style={{ opacity: 0.8 }}
+          className="absolute inset-0 w-full h-full"
+          style={{ backgroundColor: COURT_CONFIG.BG_COLOR, opacity: 0.8 }}
         />
       )}
     </div>
