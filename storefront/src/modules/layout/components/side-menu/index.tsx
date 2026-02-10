@@ -13,7 +13,7 @@ import {
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CountrySelect from "../country-select"
 import { HttpTypes } from "@medusajs/types"
-import { IoIosTennisball, IoTennisball } from "react-icons/io5"
+import { IoTennisball } from "react-icons/io5"
 
 type Brand = {
   id: string
@@ -58,7 +58,7 @@ const SideMenu = ({
                   className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-ui-fg-base"
                   onClick={() => setStoreOpen(false)}
                 >
-                  <IoIosTennisball className="w-8 h-8 text-[#004777] p-1 rounded-lg" />
+                  <IoTennisball className="w-8 h-8 text-[#004777] p-1 rounded-lg" />
                 </Popover.Button>
               </div>
 
