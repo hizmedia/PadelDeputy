@@ -3,7 +3,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 
 const Hero = () => {
   return (
-    <div className="relative w-full h-[85vh] overflow-hidden bg-gradient-to-br from-[#004777] via-[#00AFB5] to-[#004777]">
+    <div className="relative w-full h-[85vh] overflow-hidden bg-white">
       {/* Animated Background Patterns */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-10 w-72 h-72 bg-[#FF7700] rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
@@ -25,31 +25,24 @@ const Hero = () => {
 
       {/* Content Container */}
       <div className="relative z-10 content-container h-full flex flex-col justify-center items-center text-center px-6">
-        {/* Badge */}
-        <div className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
-          <span className="w-2 h-2 bg-[#FF7700] rounded-full animate-pulse"></span>
-          <span className="text-white text-sm font-quicksand font-medium tracking-wide">
-            Premium Padel Equipment
-          </span>
-        </div>
 
         {/* Main Heading */}
         <h1 className="font-oswald font-bold text-white mb-6 leading-tight">
-          <span className="block text-5xl md:text-7xl lg:text-8xl uppercase tracking-tight">
+          <span className="block text-5xl md:text-7xl lg:text-8xl uppercase tracking-tight text-[#004777] drop-shadow-lg">
             Only Gear
           </span>
-          <span className="block text-5xl md:text-7xl lg:text-8xl uppercase tracking-tight">
+          <span className="block text-5xl md:text-7xl lg:text-8xl uppercase tracking-tight text-[#004777] drop-shadow-lg">
             That Makes
           </span>
           <span className="block text-5xl md:text-7xl lg:text-8xl uppercase tracking-tight text-[#FF7700] drop-shadow-[0_0_30px_rgba(255,119,0,0.5)]">
-            The Cut
+            The Cut .
           </span>
         </h1>
 
         {/* Subheading */}
-        <p className="text-white/90 text-lg md:text-xl font-quicksand max-w-2xl mb-10 leading-relaxed">
+        <p className=" text-lg md:text-xl font-quicksand max-w-2xl mb-10 leading-relaxed text-[#004777]">
           Curated collection of professional-grade padel rackets, apparel, and accessories. 
-          <span className="block mt-2 text-[#EFD28D] font-semibold">Elevate your game with the best.</span>
+          <span className="block mt-2 text-[#00AFB5] font-semibold">Elevate your game with the best.</span>
         </p>
 
         {/* CTA Buttons */}
@@ -66,7 +59,7 @@ const Hero = () => {
             <Button 
               size="xlarge"
               variant="transparent"
-              className="border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm font-oswald font-bold uppercase tracking-wider px-8 transition-all hover:scale-105"
+              className="border-2 border-[#004777] text-[#004777] hover:bg-[#004777]/10 backdrop-blur-sm font-oswald font-bold uppercase tracking-wider px-8 transition-all hover:scale-105"
             >
               Explore Gear
             </Button>
