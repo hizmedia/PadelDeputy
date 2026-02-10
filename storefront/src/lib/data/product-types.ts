@@ -4,10 +4,9 @@ import { cache } from "react"
 
 export const getProductTypes = cache(async function () {
   try {
-    // Fetch products to get their types
+    // Fetch all products to get their types (no limit to ensure we get all types)
     const response = await sdk.store.product.list(
       {
-        limit: 100,
         fields: "type_id,type",
       },
       { next: { tags: ["products"] } }
