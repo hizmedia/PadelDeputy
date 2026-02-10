@@ -11,8 +11,8 @@ const Hero = () => {
       {/* Animated Background Patterns */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-10 w-72 h-72 bg-[#FF7700] rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-[#A30000] rounded-full mix-blend-multiply filter blur-3xl animate-blob" style={{ animationDelay: "2s" }}></div>
-        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-[#EFD28D] rounded-full mix-blend-multiply filter blur-3xl animate-blob" style={{ animationDelay: "4s" }}></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-[#A30000] rounded-full mix-blend-multiply filter blur-3xl animate-blob [animation-delay:2s]"></div>
+        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-[#EFD28D] rounded-full mix-blend-multiply filter blur-3xl animate-blob [animation-delay:4s]"></div>
       </div>
 
       {/* Content Container */}
