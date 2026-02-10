@@ -1,9 +1,13 @@
 import { Button } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import FloatingTennisBallsBackground from "@modules/common/components/floating-tennis-balls-background"
 
 const Hero = () => {
   return (
     <div className="relative w-full h-[85vh] overflow-hidden bg-white">
+      {/* Floating Tennis Balls Background */}
+      <FloatingTennisBallsBackground />
+
       {/* Animated Background Patterns */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-10 w-72 h-72 bg-[#FF7700] rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
