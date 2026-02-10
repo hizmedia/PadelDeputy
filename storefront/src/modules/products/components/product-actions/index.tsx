@@ -4,6 +4,8 @@ import { Button } from "@medusajs/ui"
 import { isEqual } from "lodash"
 import { useParams } from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { IoTennisball } from "react-icons/io5"
+import { ShoppingCart, Check } from "lucide-react"
 
 import { useIntersection } from "@lib/hooks/use-in-view"
 import Divider from "@modules/common/components/divider"
@@ -21,12 +23,19 @@ type ProductActionsProps = {
 }
 
 const optionsAsKeymap = (variantOptions: any) => {
-  return variantOptions?.reduce((acc: Record<string, string | undefined>, varopt: any) => {
-    if (varopt.option && varopt.value !== null && varopt.value !== undefined) {
-      acc[varopt.option.title] = varopt.value
-    }
-    return acc
-  }, {})
+  return variantOptions?.reduce(
+    (acc: Record<string, string | undefined>, varopt: any) => {
+      if (
+        varopt.option &&
+        varopt.value !== null &&
+        varopt.value !== undefined
+      ) {
+        acc[varopt.option.title] = varopt.value
+      }
+      return acc
+    },
+    {}
+  )
 }
 
 export default function ProductActions({
@@ -36,6 +45,7 @@ export default function ProductActions({
 }: ProductActionsProps) {
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
+  const [justAdded, setJustAdded] = useState(false)
   const countryCode = useParams().countryCode as string
 
   // If there is only 1 variant, preselect the options
@@ -106,14 +116,32 @@ export default function ProductActions({
     })
 
     setIsAdding(false)
+    setJustAdded(true)
+
+    // Reset "just added" state after 2 seconds
+    setTimeout(() => {
+      setJustAdded(false)
+    }, 2000)
   }
+
+  // ... keep all the imports and logic the same ...
 
   return (
     <>
-      <div className="flex flex-col gap-y-2" ref={actionsRef}>
+      <div
+        className="flex flex-col gap-y-6 bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-100"
+        ref={actionsRef}
+      >
+        {/* Options Section */}
         <div>
           {(product.variants?.length ?? 0) > 1 && (
-            <div className="flex flex-col gap-y-4">
+            <div className="flex flex-col gap-y-6">
+              <div className="flex items-center gap-2 pb-2">
+                <IoTennisball className="w-5 h-5 text-[#EFD28D]" />
+                <span className="text-sm font-oswald uppercase tracking-wider text-[#004777] font-bold">
+                  Customize Your Selection
+                </span>
+              </div>
               {(product.options || []).map((option) => {
                 return (
                   <div key={option.id}>
@@ -128,39 +156,119 @@ export default function ProductActions({
                   </div>
                 )
               })}
-              <Divider />
+              <Divider className="border-[#00AFB5]/30" />
             </div>
           )}
         </div>
 
+        {/* Price Section - NO WRAPPER DIV */}
         <ProductPrice product={product} variant={selectedVariant} />
 
-        <Button
+        {/* Rest remains the same... */}
+        {/* Stock Status */}
+        {selectedVariant && (
+          <div className="flex items-center gap-2 text-sm">
+            {inStock ? (
+              <>
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span className="text-green-600 font-quicksand font-semibold">
+                  In Stock & Ready to Ship
+                </span>
+              </>
+            ) : (
+              <>
+                <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                <span className="text-red-600 font-quicksand font-semibold">
+                  Out of Stock
+                </span>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Add to Cart Button */}
+        <button
           onClick={handleAddToCart}
           disabled={!inStock || !selectedVariant || !!disabled || isAdding}
-          variant="primary"
-          className="w-full h-10"
-          isLoading={isAdding}
+          className={`
+            relative w-full h-14 rounded-xl font-oswald font-bold uppercase tracking-wide text-base
+            transition-all duration-300 shadow-lg overflow-hidden
+            ${
+              !inStock || !selectedVariant || !!disabled || isAdding
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : justAdded
+                ? "bg-green-500 text-white"
+                : "bg-[#FF7700] hover:bg-[#FF7700]/90 text-white hover:shadow-2xl hover:scale-105"
+            }
+          `}
           data-testid="add-product-button"
         >
-          {!selectedVariant
-            ? "Select variant"
-            : !inStock
-            ? "Out of stock"
-            : "Add to cart"}
-        </Button>
-        <MobileActions
-          product={product}
-          variant={selectedVariant}
-          options={options}
-          updateOptions={setOptionValue}
-          inStock={inStock}
-          handleAddToCart={handleAddToCart}
-          isAdding={isAdding}
-          show={!inView}
-          optionsDisabled={!!disabled || isAdding}
-        />
+          {/* Background Animation */}
+          {!disabled &&
+            !isAdding &&
+            inStock &&
+            selectedVariant &&
+            !justAdded && (
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            )}
+
+          {/* Button Content */}
+          <span className="relative flex items-center justify-center gap-3">
+            {isAdding ? (
+              <>
+                <IoTennisball className="w-5 h-5 animate-spin" />
+                <span>Adding to Cart...</span>
+              </>
+            ) : justAdded ? (
+              <>
+                <Check className="w-5 h-5" />
+                <span>Added to Cart!</span>
+              </>
+            ) : !selectedVariant ? (
+              <>
+                <IoTennisball className="w-5 h-5" />
+                <span>Select a Variant</span>
+              </>
+            ) : !inStock ? (
+              <span>Out of Stock</span>
+            ) : (
+              <>
+                <ShoppingCart className="w-5 h-5" />
+                <span>Add to Cart</span>
+              </>
+            )}
+          </span>
+        </button>
+
+        {/* Additional Info */}
+        <div className="flex flex-col gap-2 pt-2 border-t border-gray-200">
+          <div className="flex items-center gap-2 text-xs text-gray-600 font-quicksand">
+            <Check className="w-4 h-4 text-[#00AFB5]" />
+            <span>Free shipping on orders over $100</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-gray-600 font-quicksand">
+            <Check className="w-4 h-4 text-[#00AFB5]" />
+            <span>30-day hassle-free returns</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-gray-600 font-quicksand">
+            <Check className="w-4 h-4 text-[#00AFB5]" />
+            <span>Expert customer support</span>
+          </div>
+        </div>
       </div>
+
+      {/* Mobile Actions */}
+      <MobileActions
+        product={product}
+        variant={selectedVariant}
+        options={options}
+        updateOptions={setOptionValue}
+        inStock={inStock}
+        handleAddToCart={handleAddToCart}
+        isAdding={isAdding}
+        show={!inView}
+        optionsDisabled={!!disabled || isAdding}
+      />
     </>
   )
 }
