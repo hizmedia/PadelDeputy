@@ -1,26 +1,18 @@
 import { Button } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import PadelCourtBackground from "@modules/common/components/padel-court-background"
 
 const Hero = () => {
   return (
     <div className="relative w-full h-[85vh] overflow-hidden bg-gradient-to-br from-[#004777] via-[#00AFB5] to-[#004777]">
+      {/* Animated Padel Court Background */}
+      <PadelCourtBackground className="opacity-30" />
+
       {/* Animated Background Patterns */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-10 w-72 h-72 bg-[#FF7700] rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-[#A30000] rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-[#EFD28D] rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
-      </div>
-
-      {/* Padel Court Lines Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="court-grid" width="100" height="100" patternUnits="userSpaceOnUse">
-              <path d="M 100 0 L 0 0 0 100" fill="none" stroke="white" strokeWidth="1"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#court-grid)" />
-        </svg>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-[#A30000] rounded-full mix-blend-multiply filter blur-3xl animate-blob [animation-delay:2s]"></div>
+        <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-[#EFD28D] rounded-full mix-blend-multiply filter blur-3xl animate-blob [animation-delay:4s]"></div>
       </div>
 
       {/* Content Container */}
