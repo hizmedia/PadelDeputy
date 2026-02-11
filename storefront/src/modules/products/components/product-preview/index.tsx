@@ -104,8 +104,6 @@ export default async function ProductPreview({
               </div>
             </div>
             
-            {/* Triangle notch at the bottom for price tag effect */}
-            <div className="absolute -bottom-2 left-0 w-0 h-0 border-l-[16px] border-l-transparent border-t-[8px] border-t-[#CC5F00]"></div>
           </div>
         </div>
 

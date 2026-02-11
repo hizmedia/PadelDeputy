@@ -1,9 +1,8 @@
 import { Suspense } from "react"
 
 import { listRegions } from "@lib/data/regions"
-import { getCategoriesList } from "@lib/data/categories"
-import { getProductTypesByCategory } from "@lib/data/product-types"
-import { StoreRegion } from "@medusajs/types"
+import { getCategoriesList, getCategoryChildren } from "@lib/data/categories"
+import { StoreRegion, HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
@@ -16,26 +15,61 @@ import {
   PhoneIcon,
 } from "@heroicons/react/24/solid"
 
+type Brand = {
+  id: string
+  name: string
+  slug: string
+}
+
+type CategoryWithBrandsType = {
+  category: HttpTypes.StoreProductCategory
+  brands: Brand[]
+}
+
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
   const { product_categories } = await getCategoriesList(0, 10)
+
+  console.log("🎾 NAVBAR IS RENDERING")
+  console.log("Categories:", product_categories?.map(c => c.name))
 
   const MAX_NAVBAR_CATEGORIES = 5
 
   const topLevelCategories =
     product_categories?.filter((cat) => !cat.parent_category) || []
 
-  // Fetch brands for each category
-  const categoriesWithBrands = await Promise.all(
-    topLevelCategories.slice(0, MAX_NAVBAR_CATEGORIES).map(async (category) => {
-      const brands = await getProductTypesByCategory(category.id)
-      console.log(`Category ${category.name} has ${brands.length} brands:`, brands.map(b => b.name))
-      return {
-        category,
-        brands,
-      }
-    })
-  )
+  console.log("Top level categories:", topLevelCategories.map(c => c.name))
+
+  // Fetch subcategories (brands) for each category
+  let categoriesWithBrands: CategoryWithBrandsType[] = []
+  try {
+    categoriesWithBrands = await Promise.all(
+      topLevelCategories.slice(0, MAX_NAVBAR_CATEGORIES).map(async (category) => {
+        console.log(`🔍 Fetching subcategories for: ${category.name}`)
+        
+        // Get children (subcategories/brands)
+        const children = await getCategoryChildren(category.id)
+        
+        // Convert to Brand format
+        const brands: Brand[] = children.map(child => ({
+          id: child.id,
+          name: child.name,
+          slug: child.handle || child.name.toLowerCase().replace(/\s+/g, '-')
+        }))
+        
+        console.log(`✅ Category ${category.name} has ${brands.length} subcategories:`, brands.map(b => b.name))
+        
+        return {
+          category,
+          brands,
+        }
+      })
+    )
+  } catch (error) {
+    console.error("❌ ERROR fetching subcategories:", error)
+  }
+
+  console.log("📦 Final categoriesWithBrands:", categoriesWithBrands)
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
@@ -85,13 +119,16 @@ export default async function Nav() {
             {/* Desktop categories with brand dropdowns */}
             <div className="hidden small:flex flex-grow items-center justify-center gap-x-8 h-full">
               {categoriesWithBrands.length > 0 ? (
-                categoriesWithBrands.map(({ category, brands }) => (
-                  <CategoryWithBrands
-                    key={category.id}
-                    category={category}
-                    brands={brands}
-                  />
-                ))
+                categoriesWithBrands.map(({ category, brands }) => {
+                  console.log(`🎨 Rendering CategoryWithBrands for ${category.name} with ${brands.length} brands`)
+                  return (
+                    <CategoryWithBrands
+                      key={category.id}
+                      category={category}
+                      brands={brands}
+                    />
+                  )
+                })
               ) : (
                 <span className="text-sm text-gray-500">Loading categories...</span>
               )}

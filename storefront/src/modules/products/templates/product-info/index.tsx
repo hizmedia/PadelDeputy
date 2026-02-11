@@ -7,8 +7,29 @@ type ProductInfoProps = {
 }
 
 const ProductInfo = ({ product }: ProductInfoProps) => {
-  // Get brand from TYPE field
-  const brand = product.type?.value || product.type?.id || (typeof product.type === 'string' ? product.type : undefined)
+  // Get brand from subcategories (child categories)
+  const getBrand = () => {
+    if (!product.categories || product.categories.length === 0) return null
+    
+    // Find a category that has a parent (meaning it's a subcategory/brand)
+    const subcategory = product.categories.find(cat => cat.parent_category_id)
+    
+    return subcategory?.name
+  }
+
+  const brand = getBrand()
+
+  // Get the main/parent category
+  const getMainCategory = () => {
+    if (!product.categories || product.categories.length === 0) return null
+    
+    // Find a category that doesn't have a parent (top-level category)
+    const mainCategory = product.categories.find(cat => !cat.parent_category_id)
+    
+    return mainCategory
+  }
+
+  const mainCategory = getMainCategory()
 
   return (
     <div id="product-info">
@@ -25,13 +46,13 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
           </div>
         )}
 
-        {/* Collection Link */}
-        {product.collection && (
+        {/* Main Category Link */}
+        {mainCategory && (
           <LocalizedClientLink
-            href={`/collections/${product.collection.handle}`}
+            href={`/categories/${mainCategory.handle}`}
             className="text-sm font-quicksand text-[#00AFB5] hover:text-[#FF7700] transition-colors uppercase tracking-wide font-semibold"
           >
-            {product.collection.title} →
+            {mainCategory.name} →
           </LocalizedClientLink>
         )}
 
@@ -61,12 +82,29 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
 
         {/* Product Meta Info */}
         <div className="flex flex-wrap gap-3 pt-2">
+          {/* Show all categories as clickable badges */}
+          {product.categories && product.categories.length > 0 && (
+            <>
+              {product.categories.map((category) => (
+                <LocalizedClientLink
+                  key={category.id}
+                  href={`/categories/${category.handle}`}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00AFB5]/10 hover:bg-[#00AFB5]/20 rounded-full text-sm font-quicksand text-[#004777] hover:text-[#FF7700] transition-colors"
+                >
+                  <span className="w-2 h-2 bg-[#00AFB5] rounded-full"></span>
+                  {category.name}
+                </LocalizedClientLink>
+              ))}
+            </>
+          )}
+          
           {product.variants && product.variants.length > 1 && (
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-full text-sm font-quicksand text-gray-700">
               <span className="w-2 h-2 bg-[#00AFB5] rounded-full"></span>
               {product.variants.length} Variants Available
             </div>
           )}
+          
           {product.weight && (
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-full text-sm font-quicksand text-gray-700">
               <span className="w-2 h-2 bg-[#FF7700] rounded-full"></span>
