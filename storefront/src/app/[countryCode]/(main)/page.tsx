@@ -4,6 +4,7 @@ import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
 import ValueProposition from "@modules/home/components/value-proposition"
 import CategoryShowcase from "@modules/home/components/category-showcase"
+import Testimonials from "@modules/home/components/testimonials"
 import { getCollectionsWithProducts } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 import { getCategoriesList } from "@lib/data/categories"
@@ -46,12 +47,13 @@ export default async function Home({
       <ValueProposition />
       {product_categories && product_categories.length > 0 && (
         <CategoryShowcase categories={product_categories} />
-      )}
+      )} 
       <div className="py-12">
         <ul className="flex flex-col gap-x-6">
           <FeaturedProducts collections={collections} region={region} />
         </ul>
       </div>
+      <Testimonials />
     </>
   )
 }
