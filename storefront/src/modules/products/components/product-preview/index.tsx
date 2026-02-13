@@ -84,10 +84,10 @@ export default async function ProductPreview({
         )}
 
         {/* Price Tag - Sticking out from right side */}
-        <div className="absolute -right-1 top-1/2 -translate-y-1/2 z-20">
+        <div className="absolute -right-1 top-1/3 xsmall:top-1/2 -translate-y-1/2 z-20">
           <div className="relative">
             {/* Price Tag Shape */}
-            <div className="bg-[#FF7700] text-white px-4 py-3 pr-6 rounded-l-xl shadow-xl flex items-center gap-2 group-hover:shadow-2xl group-hover:pr-7 transition-all duration-300">
+            <div className="bg-[#FF7700] text-white px-2 py-1 xsmall:px-4 xsmall:py-3 pr-6 rounded-l-lg shadow-xl flex items-center gap-2 group-hover:shadow-2xl group-hover:pr-7 transition-all duration-300">
               {/* Hole punch effect */}
               <div className="absolute left-2 top-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full border border-[#CC5F00]"></div>
               
@@ -98,7 +98,7 @@ export default async function ProductPreview({
                     {cheapestPrice.original_price}
                   </span>
                 )}
-                <span className="text-2xl font-bold font-oswald whitespace-nowrap">
+                <span className="text-sm xsmall:text-2xl font-bold font-oswald whitespace-nowrap">
                   {cheapestPrice?.calculated_price || "$99.99"}
                 </span>
               </div>

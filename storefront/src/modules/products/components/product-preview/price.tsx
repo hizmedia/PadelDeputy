@@ -10,7 +10,7 @@ export default async function PreviewPrice({ price }: { price: VariantPrice }) {
     <>
       {price.price_type === "sale" && (
         <Text
-          className="line-through text-gray-400 text-sm font-quicksand"
+          className="line-through text-gray-400 text-xs font-quicksand"
           data-testid="original-price"
         >
           {price.original_price}
